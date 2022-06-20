@@ -1,72 +1,64 @@
-import React from 'react';
-import {PopupWithForm} from './PopupWithForm';
+import React, {useState} from 'react';
+import {api} from '../utils/Api.js'
 
-import {
-  PARAMS,
-  buttonUserAvatar,
-  buttonUserProfile,
-  buttonAddCard,
+function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
 
-  // popupUserAvatarForm,
-  // popupUserProfileForm,
-  // popupAddCardForm,
-} from '../utils/constants.js';
+  const [userName, setUserName] = useState('');
+  const [userDescription , setUserDescription] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const [cards, setCards] = useState([]);
 
+  React.useEffect(() => {
+    Promise.all([
+      api.getUser(),
+      api.getInitialCards()   //todo использовать карточки
+    ])
+      .then(([ getUserRes, getInitialCardsRes]) => {
+        setUserName(getUserRes.name);
+        setUserDescription(getUserRes.about);
+        setUserAvatar(getUserRes.avatar);
 
-
-function Main() {
-
-  const handleEditAvatarClick = () => {
-    const popupUserAvatarForm = document.querySelector(PARAMS.popupUpdateAvatarSelector);
-    popupUserAvatarForm.classList.add(PARAMS.popupOpenedClass);
-  }
-
-  const handleEditProfileClick = () => {
-    const popupUserProfileForm = document.querySelector(PARAMS.popupUserSelector);
-    popupUserProfileForm.classList.add(PARAMS.popupOpenedClass);
-  }
-
-  const handleAddPlaceClick = () => {
-    const popupAddCardForm = document.querySelector(PARAMS.popupAddCardSelector);
-    popupAddCardForm.classList.add(PARAMS.popupOpenedClass);
-  }
+        setCards([...getInitialCardsRes]);
+    })
+    .catch(err => console.log(err));
+  }, []);
 
   return (
     <main className="content">
       <section className="profile root__section profile_margin">
         <div className="profile__card">
           <div className="profile__avatar">
-            <img alt="фото профиля" className="profile__photo" />
-            <button aria-label="обновить аватар" className="profile__edit-avatar" onClick={handleEditAvatarClick}>
+            <img alt="фото профиля" className="profile__photo" src={userAvatar} />
+            <button aria-label="обновить аватар" className="profile__edit-avatar" onClick={onEditAvatar}>
             </button>
           </div>
           <div className="profile__text">
             <div className="profile__name">
-              <h1 className="profile__name-text">Жак-Ив Кусто</h1>
-              <button aria-label="редактировать" className="profile__edit-button" onClick={handleEditProfileClick}>
+              <h1 className="profile__name-text">{userName}</h1>
+              <button aria-label="редактировать" className="profile__edit-button" onClick={onEditProfile}>
               </button>
             </div>
-            <p className="profile__job-text">Исследователь океана</p>
+            <p className="profile__job-text">{userDescription}</p>
           </div>
         </div>
-        <button aria-label="добавить" className="profile__add-button" onClick={handleAddPlaceClick}></button>
+        <button aria-label="добавить" className="profile__add-button" onClick={onAddPlace}></button>
       </section>
 
       <section className="cards root__section cards_margin">
         <ul className="cards__items">
-          <template id="card__template">
-            <li className="cards__item">
-              <img src="src/components/App#" alt="" className="cards__img" />
-              <div className="cards__description">
-                <h3 className="cards__title"></h3>
-                <div className="cards__likes">
-                  <button aria-label="добавить в избранное" className="cards__heart"></button>
-                  <p className="cards__count-likes"></p>
+            {cards.map((card, i) => (
+              <li key={i} className="cards__item">
+                <img src={card.link} alt="" className="cards__img" />
+                <div className="cards__description">
+                  <h3 className="cards__title">{card.name}</h3>
+                  <div className="cards__likes">
+                    <button aria-label="добавить в избранное" className="cards__heart"></button>
+                    <p className="cards__count-likes">{card.likes.length}</p>
+                  </div>
                 </div>
-              </div>
-              <button aria-label="удалить" className="cards__trash"></button>
-            </li>
-          </template>
+                <button aria-label="удалить" className="cards__trash"></button>
+              </li>
+            ))}
         </ul>
       </section>
     </main>
