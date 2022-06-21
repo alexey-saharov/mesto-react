@@ -52,11 +52,3 @@ export const PARAMS = {
   serverUrl: 'https://mesto.nomoreparties.co/v1/cohort-42',
   token: '29779b63-56c9-48f1-bf2c-946b66c63b59',
 };
-
-export const buttonUserAvatar = document.querySelector(PARAMS.userAvatarButtonSelector);
-export const buttonUserProfile = document.querySelector(PARAMS.buttonUserSelector);
-export const buttonAddCard = document.querySelector(PARAMS.buttonAddCardSelector);
-
-// export const popupUserAvatarForm = document.querySelector(PARAMS.popupUpdateAvatar).querySelector(PARAMS.formSelector);
-// export const popupUserProfileForm = document.querySelector(PARAMS.popupUserSelector).querySelector(PARAMS.formSelector);
-// export const popupAddCardForm = document.querySelector(PARAMS.popupAddCardSelector).querySelector(PARAMS.formSelector);
