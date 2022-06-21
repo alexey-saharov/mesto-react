@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {api} from '../utils/Api.js'
+import {api} from '../utils/Api.js';
+import Card from '../components/Card';
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 
   const [userName, setUserName] = useState('');
   const [userDescription , setUserDescription] = useState('');
@@ -11,7 +12,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
   React.useEffect(() => {
     Promise.all([
       api.getUser(),
-      api.getInitialCards()   //todo использовать карточки
+      api.getInitialCards()
     ])
       .then(([ getUserRes, getInitialCardsRes]) => {
         setUserName(getUserRes.name);
@@ -47,17 +48,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
       <section className="cards root__section cards_margin">
         <ul className="cards__items">
             {cards.map((card, i) => (
-              <li key={i} className="cards__item">
-                <img src={card.link} alt="" className="cards__img" />
-                <div className="cards__description">
-                  <h3 className="cards__title">{card.name}</h3>
-                  <div className="cards__likes">
-                    <button aria-label="добавить в избранное" className="cards__heart"></button>
-                    <p className="cards__count-likes">{card.likes.length}</p>
-                  </div>
-                </div>
-                <button aria-label="удалить" className="cards__trash"></button>
-              </li>
+              <Card card={card} i={i} onCardClick={onCardClick}/>
             ))}
         </ul>
       </section>

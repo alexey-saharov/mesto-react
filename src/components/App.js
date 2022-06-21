@@ -4,12 +4,13 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
-import {PARAMS} from "../utils/constants";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopupOpen(true);
@@ -23,10 +24,15 @@ function App() {
     setAddPlacePopupOpen(true);
   }
 
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+  }
+
   const closeAllPopups = () => {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
+    setSelectedCard({});
   }
 
   return (
@@ -37,6 +43,7 @@ function App() {
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
         />
         <Footer />
 
@@ -124,12 +131,7 @@ function App() {
           <span id="link_avatar-error" className="popup__error popup__error_margin"></span>
         </PopupWithForm>
 
-        <ImagePopup />
-        {/*  ImagePopup будет принимать только два props (ссылка на функцию закрытия и данные карточки) и использовать
-        их в разметке. Чтобы не прописывать в разметке undefined в тех случаях когда никакая карточка не выбрана -
-        посмотрите в сторону использования тернарных операторов. Показывать попап в разметке или нет можно тоже
-        через модификатор (добавлять модификатор, если выбранная карточка есть).*/}
-
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
     </>
   );
