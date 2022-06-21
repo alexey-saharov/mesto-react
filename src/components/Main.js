@@ -48,7 +48,9 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       <section className="cards root__section cards_margin">
         <ul className="cards__items">
             {cards.map((card, i) => (
-              <Card card={card} i={i} onCardClick={onCardClick}/>
+              <li key={i} className="cards__item">
+                <Card card={card} onCardClick={onCardClick}/>
+              </li>
             ))}
         </ul>
       </section>

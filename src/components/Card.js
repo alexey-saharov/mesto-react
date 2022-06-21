@@ -1,13 +1,13 @@
 import React from 'react';
 
-function Card({ card, i, onCardClick }) {
+function Card({ card, onCardClick }) {
 
   function handleClick() {
     onCardClick(card);
   }
 
   return (
-    <li key={i} className="cards__item">
+    <>
       <img src={card.link} alt="" className="cards__img" onClick={handleClick}/>
       <div className="cards__description">
         <h3 className="cards__title">{card.name}</h3>
@@ -17,7 +17,7 @@ function Card({ card, i, onCardClick }) {
         </div>
       </div>
       <button aria-label="удалить" className="cards__trash"></button>
-    </li>
+    </>
   );
 }
 

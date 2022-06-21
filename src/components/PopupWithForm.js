@@ -6,7 +6,7 @@ function PopupWithForm({ title, children, button_title, isOpen, onClose, name })
     ? `popup popup_type_${name} popup_is-opened`
     : `popup popup_type_${name}`;
 
-  const classNameForm = ((name === 'avatar') || (name === 'confirmation'))
+  const classNameForm = (name === 'avatar')
     ? `popup__form popup__form_${name}`
     : 'popup__form';
 

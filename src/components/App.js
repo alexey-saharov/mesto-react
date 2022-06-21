@@ -11,7 +11,6 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
 
-
   const handleEditAvatarClick = () => {
     setEditAvatarPopupOpen(true);
   }
@@ -104,14 +103,6 @@ function App() {
             placeholder="Ссылка на картинку"
           />
           <span id="link-error" className="popup__error popup__error_margin"></span>
-        </PopupWithForm>
-        <PopupWithForm
-          title="Вы уверены?"
-          button_title="Да"
-          isOpen={false}
-          name="confirmation"
-          onClose={closeAllPopups}
-        >
         </PopupWithForm>
         <PopupWithForm
           title="Обновить аватар"
