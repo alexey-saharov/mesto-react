@@ -2,13 +2,8 @@ import React from 'react';
 
 function PopupWithForm({ title, children, button_title, isOpen, onClose, name }) {
 
-  const classNamePopup = (isOpen)
-    ? `popup popup_type_${name} popup_is-opened`
-    : `popup popup_type_${name}`;
-
-  const classNameForm = (name === 'avatar')
-    ? `popup__form popup__form_${name}`
-    : 'popup__form';
+  const classNamePopup = `popup popup_type_${name} ${isOpen && 'popup_is-opened'}`;
+  const classNameForm = `popup__form ${(name === 'avatar') && `popup__form_${name}`}`;
 
   return (
     <section className={classNamePopup}>
