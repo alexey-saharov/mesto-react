@@ -79,7 +79,7 @@ class Api {
       .then(this._handleResponse)
   }
 
-  toggleLikeCard(id, targetLikeStatus) {
+  changeLikeCardStatus(id, targetLikeStatus) {
     if (targetLikeStatus) {
       return this.likeCard({ _id: id});
     } else {
