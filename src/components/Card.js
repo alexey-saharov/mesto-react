@@ -1,20 +1,22 @@
 import React from 'react';
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
-function Card({ card, onCardClick, onCardLike }) {
+function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 
   const currentUser = React.useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const cardDeleteButtonClassName = (
-    `card__delete-button ${isOwn ? 'card__delete-button_visible' : 'card__delete-button_hidden'}`
+    `cards__delete-button ${isOwn ? 'cards__delete-button_visible' : 'cards__delete-button_hidden'}`
   );
   const isLiked = card.likes.some(i => i._id === currentUser._id);
   const cardLikeButtonClassName = (`cards__like ${isLiked && 'cards__like_active'}`);
 
-
-
   function handleClick() {
     onCardClick(card);
+  }
+
+  function handleDeleteCard() {
+    onCardDelete(card);
   }
 
   function handleLikeClick() {
@@ -32,7 +34,7 @@ function Card({ card, onCardClick, onCardLike }) {
           <p className="cards__count-likes">{card.likes.length}</p>
         </div>
       </div>
-      <button aria-label="удалить" className="cards__delete-button"></button>
+      <button aria-label="удалить" className={cardDeleteButtonClassName} onClick={handleDeleteCard}></button>
     </>
   );
 }

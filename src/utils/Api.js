@@ -71,7 +71,7 @@ class Api {
       .then(this._handleResponse)
   }
 
-  deleteLikeCard({ _id }) {
+  dislikeCard({ _id }) {
     return fetch(`${this._url}/cards/${_id}/likes`,{
       method: 'DELETE',
       headers: this._headers,
@@ -83,7 +83,7 @@ class Api {
     if (targetLikeStatus) {
       return this.likeCard({ _id: id});
     } else {
-      return this.deleteLikeCard({ _id: id});
+      return this.dislikeCard({ _id: id});
     }
   }
 }
