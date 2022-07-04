@@ -4,12 +4,21 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import {api} from '../utils/Api.js';
 
 function App() {
+  const [currentUser, setCurrentUser] = useState('');
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+
+  React.useEffect(() => {
+    Promise.resolve(api.getUser())
+      .then((getUserRes) => {
+        setCurrentUser(getUserRes._id);
+    })
+  }, []);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
