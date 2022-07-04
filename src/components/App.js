@@ -5,6 +5,8 @@ import Footer from './Footer';
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import {api} from '../utils/Api.js';
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState('');
@@ -16,7 +18,7 @@ function App() {
   React.useEffect(() => {
     Promise.resolve(api.getUser())
       .then((getUserRes) => {
-        setCurrentUser(getUserRes._id);
+        setCurrentUser(getUserRes);
     })
   }, []);
 
@@ -44,94 +46,96 @@ function App() {
   }
 
   return (
-    <div className="root">
-      <Header />
-      <Main
-        onEditAvatar={handleEditAvatarClick}
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onCardClick={handleCardClick}
-      />
-      <Footer />
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="root">
+        <Header />
+        <Main
+          onEditAvatar={handleEditAvatarClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+        />
+        <Footer />
 
-      <PopupWithForm
-        title="Редактировать"
-        button_title="Сохранить"
-        isOpen={isEditProfilePopupOpen}
-        name="profile"
-        onClose={closeAllPopups}
-      >
+        <PopupWithForm
+          title="Редактировать"
+          button_title="Сохранить"
+          isOpen={isEditProfilePopupOpen}
+          name="profile"
+          onClose={closeAllPopups}
+        >
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              className="popup__input popup__input_fullname"
+              minLength="2"
+              maxLength="40"
+              required
+              placeholder="Имя"
+            />
+            <span id="fullname-error" className="popup__error"></span>
+            <input
+              type="text"
+              id="job"
+              name="job"
+              className="popup__input popup__input_job"
+              minLength="2"
+              maxLength="200"
+              required
+              placeholder="О себе"
+            />
+            <span id="job-error" className="popup__error popup__error_margin"></span>
+        </PopupWithForm>
+        <PopupWithForm
+          title="Новое место"
+          button_title="Создать"
+          isOpen={isAddPlacePopupOpen}
+          name="card-add"
+          onClose={closeAllPopups}
+        >
           <input
             type="text"
-            id="fullname"
-            name="fullname"
-            className="popup__input popup__input_fullname"
+            id="placename"
+            name="name"
+            className="popup__input popup__input_placename"
             minLength="2"
-            maxLength="40"
+            maxLength="30"
             required
-            placeholder="Имя"
+            placeholder="Название"
           />
-          <span id="fullname-error" className="popup__error"></span>
+          <span id="placename-error" className="popup__error"></span>
           <input
-            type="text"
-            id="job"
-            name="job"
-            className="popup__input popup__input_job"
-            minLength="2"
-            maxLength="200"
+            type="url"
+            id="link"
+            name="link"
+            className="popup__input popup__input_placelink"
             required
-            placeholder="О себе"
+            placeholder="Ссылка на картинку"
           />
-          <span id="job-error" className="popup__error popup__error_margin"></span>
-      </PopupWithForm>
-      <PopupWithForm
-        title="Новое место"
-        button_title="Создать"
-        isOpen={isAddPlacePopupOpen}
-        name="card-add"
-        onClose={closeAllPopups}
-      >
-        <input
-          type="text"
-          id="placename"
-          name="name"
-          className="popup__input popup__input_placename"
-          minLength="2"
-          maxLength="30"
-          required
-          placeholder="Название"
-        />
-        <span id="placename-error" className="popup__error"></span>
-        <input
-          type="url"
-          id="link"
-          name="link"
-          className="popup__input popup__input_placelink"
-          required
-          placeholder="Ссылка на картинку"
-        />
-        <span id="link-error" className="popup__error popup__error_margin"></span>
-      </PopupWithForm>
-      <PopupWithForm
-        title="Обновить аватар"
-        button_title="Сохранить"
-        isOpen={isEditAvatarPopupOpen}
-        name="avatar"
-        onClose={closeAllPopups}
-      >
-        <input
-          type="url"
-          id="link_avatar"
-          name="link_avatar"
-          className="popup__input popup__input_avatarlink"
-          required
-          placeholder="Ссылка на картинку"
-        />
-        <span id="link_avatar-error" className="popup__error popup__error_margin"></span>
-      </PopupWithForm>
+          <span id="link-error" className="popup__error popup__error_margin"></span>
+        </PopupWithForm>
+        <PopupWithForm
+          title="Обновить аватар"
+          button_title="Сохранить"
+          isOpen={isEditAvatarPopupOpen}
+          name="avatar"
+          onClose={closeAllPopups}
+        >
+          <input
+            type="url"
+            id="link_avatar"
+            name="link_avatar"
+            className="popup__input popup__input_avatarlink"
+            required
+            placeholder="Ссылка на картинку"
+          />
+          <span id="link_avatar-error" className="popup__error popup__error_margin"></span>
+        </PopupWithForm>
 
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-    </div>
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 

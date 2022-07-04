@@ -1,24 +1,16 @@
 import React, {useState} from 'react';
 import {api} from '../utils/Api.js';
 import Card from '../components/Card';
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 
-  const [userName, setUserName] = useState('');
-  const [userDescription , setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
+  const currentUser = React.useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
 
   React.useEffect(() => {
-    Promise.all([
-      api.getUser(),
-      api.getInitialCards()
-    ])
-      .then(([ getUserRes, getInitialCardsRes]) => {
-        setUserName(getUserRes.name);
-        setUserDescription(getUserRes.about);
-        setUserAvatar(getUserRes.avatar);
-
+    Promise.resolve(api.getInitialCards())
+      .then((getInitialCardsRes) => {
         setCards([...getInitialCardsRes]);
     })
     .catch(err => console.log(err));
@@ -29,7 +21,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       <section className="profile root__section profile_margin">
         <div className="profile__card">
           <div className="profile__avatar">
-            <img alt="фото профиля" className="profile__photo" src={userAvatar} />
+            <img alt="фото профиля" className="profile__photo" src={currentUser.avatar} />
             <button
               aria-label="обновить аватар"
               className="profile__edit-avatar"
@@ -39,7 +31,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
           </div>
           <div className="profile__text">
             <div className="profile__name">
-              <h1 className="profile__name-text">{userName}</h1>
+              <h1 className="profile__name-text">{currentUser.name}</h1>
               <button
                 aria-label="редактировать"
                 className="profile__edit-button"
@@ -47,7 +39,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
               >
               </button>
             </div>
-            <p className="profile__job-text">{userDescription}</p>
+            <p className="profile__job-text">{currentUser.about}</p>
           </div>
         </div>
         <button
