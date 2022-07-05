@@ -30,7 +30,7 @@ class Api {
       .then(this._handleResponse)
   }
 
-  updateUserAvatar(userAvatar) {
+  setUserAvatar(userAvatar) {
     return fetch(`${this._url}/users/me/avatar`,{
       method: 'PATCH',
       headers: this._headers,
