@@ -4,22 +4,24 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup";
 import {api} from '../utils/Api.js';
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 
 function App() {
-  const [currentUser, setCurrentUser] = useState('');
+  const [currentUser, setCurrentUser] = useState({});
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
   React.useEffect(() => {
-    Promise.resolve(api.getUser())
+    api.getUser()
       .then((getUserRes) => {
-        setCurrentUser(getUserRes);
-    })
+        setCurrentUser(getUserRes)
+      })
+      .catch(err => console.log(err));
   }, []);
 
   const handleEditAvatarClick = () => {
@@ -37,6 +39,15 @@ function App() {
   const handleCardClick = (card) => {
     setSelectedCard(card);
   }
+
+  const handleUpdateUser = ({ name, about }) => {
+    api.setUserInfo({ name, about })
+      .then((getUserRes) => {
+        setCurrentUser(getUserRes);
+        closeAllPopups();
+      })
+      .catch(err => console.log(err));
+  };
 
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false);
@@ -57,36 +68,8 @@ function App() {
         />
         <Footer />
 
-        <PopupWithForm
-          title="Редактировать"
-          button_title="Сохранить"
-          isOpen={isEditProfilePopupOpen}
-          name="profile"
-          onClose={closeAllPopups}
-        >
-            <input
-              type="text"
-              id="fullname"
-              name="fullname"
-              className="popup__input popup__input_fullname"
-              minLength="2"
-              maxLength="40"
-              required
-              placeholder="Имя"
-            />
-            <span id="fullname-error" className="popup__error"></span>
-            <input
-              type="text"
-              id="job"
-              name="job"
-              className="popup__input popup__input_job"
-              minLength="2"
-              maxLength="200"
-              required
-              placeholder="О себе"
-            />
-            <span id="job-error" className="popup__error popup__error_margin"></span>
-        </PopupWithForm>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+
         <PopupWithForm
           title="Новое место"
           button_title="Создать"

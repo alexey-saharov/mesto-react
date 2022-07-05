@@ -1,13 +1,13 @@
 import React from 'react';
 
-function PopupWithForm({ title, children, button_title, isOpen, onClose, name }) {
+function PopupWithForm({ title, children, button_title, isOpen, onClose, name, onSubmit }) {
 
   const classNamePopup = `popup popup_type_${name} ${isOpen && 'popup_is-opened'}`;
   const classNameForm = `popup__form ${(name === 'avatar') && `popup__form_${name}`}`;
 
   return (
     <section className={classNamePopup}>
-      <form action="src/components/App#" className={classNameForm}>
+      <form action="src/components/App#" className={classNameForm} onSubmit={onSubmit}>
         <button type="button" aria-label="закрыть" className="popup__button-close" onClick={onClose}></button>
         <h2 className="popup__title">{title}</h2>
         {children}

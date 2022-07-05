@@ -21,11 +21,11 @@ class Api {
       .then(this._handleResponse)
   }
 
-  updateUserData(userData) {
+  setUserInfo(UserInfo) {
     return fetch(`${this._url}/users/me`,{
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify(userData),
+      body: JSON.stringify(UserInfo),
     })
       .then(this._handleResponse)
   }
