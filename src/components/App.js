@@ -76,17 +76,15 @@ function App() {
   }
 
   React.useEffect(() => {
-    Promise.resolve(api.getInitialCards())
-      .then((getInitialCardsRes) => {
-        setCards([...getInitialCardsRes]);
-      })
+    api.getInitialCards()
+      .then(cards => setCards(cards))
       .catch(err => console.log(err));
   }, []);
 
   function handleCardDelete(card) {
     api.deleteCard({ _id: card._id })
       .then(() => {
-        setCards((state) => state.filter((c) => c !== card));
+        setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch(err => console.log(err));
   }

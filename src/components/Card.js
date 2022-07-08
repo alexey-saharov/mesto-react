@@ -25,7 +25,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 
   return (
     <>
-      <img src={card.link} alt="" className="cards__img" onClick={handleClick}/>
+      <img src={card.link} alt={card.name} className="cards__img" onClick={handleClick}/>
       <div className="cards__description">
         <h3 className="cards__title">{card.name}</h3>
         <div className="cards__likes">

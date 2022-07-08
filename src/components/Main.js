@@ -42,9 +42,10 @@ function Main({ cards, onCardLike, onCardDelete, onEditAvatar, onEditProfile, on
 
       <section className="cards root__section cards_margin">
         <ul className="cards__items">
-            {cards.map((card, i) => (
-              <li key={i} className="cards__item">
+            {cards.map((card) => (
+              <li className="cards__item">
                 <Card
+                  key={card._id}
                   card={card}
                   onCardClick={onCardClick}
                   onCardLike={onCardLike}
